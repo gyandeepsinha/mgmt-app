@@ -1,0 +1,19 @@
+{
+  "name": "proj-mgmt-app",
+  "version": "1.0.0",
+  "description": "Project Management Application in NodeJs with GraphQL and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Gyandeep Sinha",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "mongoose": "^6.6.1"
+  }
+}
