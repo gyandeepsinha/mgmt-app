@@ -1,5 +1,4 @@
-const { GraphQLObjectType, GraphQLID, GraphQLString,
-    GraphQLSchema, GraphQLList, GraphQLNonNull }   = require('graphql');
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList, GraphQLNonNull }   = require('graphql');
 const { project }   = require('../models/project');
 const { client  }   = require('../models/client');
 
@@ -70,39 +69,78 @@ const mutation  = new GraphQLObjectType({
     name : 'Mutation',
     fields : {
         addClient : {
-            type : 'ClientType',
+            type : ClientType,
             args : {
                 name  : {type : GraphQLNonNull(GraphQLString)},
                 email : {type : GraphQLNonNull(GraphQLString)},
                 phone : {type : GraphQLNonNull(GraphQLString)}
             },
             async resolve(parent, args){
-                const client = new client({
+                const clientObject = new client({
                     name  : args.name,
                     email : args.email,
                     phone : args.phone
                 });
-                return await client.save();                
+                return await clientObject.save();                
+            }
+        },
+        updateClient : {
+            type : ClientType,
+            description : 'Updadate client By clientId',
+            args : {
+                id    : { type : GraphQLNonNull(GraphQLID) },
+                name  : { type : GraphQLNonNull(GraphQLString)},
+                email : { type : GraphQLNonNull(GraphQLString)},
+                phone : { type : GraphQLNonNull(GraphQLString)}
+            },
+            async resolve(parent, args){
+                return await client.findByIdAndUpdate( args.id,{$set:{...args},}, {new : true} );
+            }
+        },
+        deleteClient : {
+            type : ClientType,
+            args : {id : {type : GraphQLNonNull(GraphQLID)}},
+            async resolve(parent, args){
+               return await client.findByIdAndRemove(args.id);                
+            }
+        },
+        addProject : {
+            type : ProjectType,
+            args : {
+                clientId    : {type : GraphQLNonNull(GraphQLID)},
+                name        : {type : GraphQLNonNull(GraphQLString)},
+                description : {type : GraphQLNonNull(GraphQLString)},
+                status      : {type : GraphQLNonNull(GraphQLString)}
+            },
+            async resolve(parent, args){
+                const projectObject = new project({
+                    clientId    : args.clientId,
+                    name        : args.name,
+                    description : args.description,
+                    status      : args.status
+                });
+                return await project.save();
+            }
+        },
+        updateProject :{
+            type : ProjectType,
+            args :{
+                id          : { type : GraphQLNonNull(GraphQLID) },
+                name        : { type : GraphQLNonNull(GraphQLString)},
+                description : { type : GraphQLNonNull(GraphQLString)},
+                status      : { type : GraphQLNonNull(GraphQLString)},
+            },
+            async resolve(parent, args){
+                return await project.findByIdAndUpdate(args.id,{ $set : {...args}}, {new : true});
+            }
+        },
+        deleteProject : {
+            type : ProjectType,
+            args : {id : { type : GraphQLNonNull(GraphQLID)}},
+            async resolve(parent, args){
+                return project.findByIdAndRemove(args.id);
             }
         }
-        // addProject : {
-        //     type : 'ProjectType',
-        //     args : {
-        //         clientId    : {type : GraphQLNonNull(GraphQLID)},
-        //         name        : {type : GraphQLNonNull(GraphQLString)},
-        //         description : {type : GraphQLNonNull(GraphQLString)},
-        //         status      : {type : GraphQLNonNull(GraphQLString)}
-        //     },
-        //     async resolve(parent, args){
-        //         const project1 = new project({
-        //             clientId    : args.clientId,
-        //             name        : args.name,
-        //             description : args.description,
-        //             status      : args.status
-        //         });
-        //         return await project1.save();
-        //     }
-        // }
     }
 });
 // Exporting Modules & Mutations
