@@ -11,12 +11,10 @@ I have developed this project for only backend.If anyone want to extent and conn
 
 
 ## How to run this code
-============================================================================<br>
+==========================================================================<br>
 I am assuming that you have installed all the required setup for the project. <br>
-step-1 : open your command prompt and type 'monogd' command to start Database server.<br>
-
-step-2 : open command prompt and reach to your project folder and write node node app.js (In my case my main file name is app.js).<br>
-
+step-1 : open your project in any editor like vscode or sublime and use <b>npm install</b> to install all NPM modules.<br>
+step-2 : open command prompt and reach to your project folder and write node node index.js (In my case my main file name is index.js).<br>
 step-3 : command prompt will show message that your server is running on . Your server is running on PORT 4000 (In my case i have setup and allocat PORT 4000 to project).
 
 Hope it will work fine.<br>
